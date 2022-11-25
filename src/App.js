@@ -70,7 +70,6 @@ class App extends React.Component {
           <div className="tabs-order">
             <ul className="sort-container">
               {this.state.tabs.map((tab) => (
-                // 为每个设计一个点击事件,然后点击的时候就会更新 active
                 <li
                   onClick={() => this.switchTab(tab.type)}
                   key={tab.id}
