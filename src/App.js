@@ -50,6 +50,12 @@ class App extends React.Component {
       },
     ],
   };
+  switchTab = (type) => {
+    //实现思路: 点击了那个tab 就将其作为当前得Tab,然后把type属性交给state中active
+    this.setState({
+      active: type,
+    });
+  };
 
   render() {
     return (
@@ -64,6 +70,7 @@ class App extends React.Component {
             <ul className="sort-container">
               {this.state.tabs.map((tab) => (
                 <li
+                  onClick={() => this.switchTab(tab.type)}
                   key={tab.id}
                   className={tab.type === this.state.active ? "on" : ""}
                 >
