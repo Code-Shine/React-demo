@@ -1,10 +1,10 @@
-import './index.css'
-import avatar from './images/avatar.png'
-import React from 'react'
+import "./index.css";
+import avatar from "./images/avatar.png";
+import React from "react";
 
 // 时间格式化
-function formatDate (time) {
-  return `${time.getFullYear()}-${time.getMonth()}-${time.getDate()}`
+function formatDate(time) {
+  return `${time.getFullYear()}-${time.getMonth()}-${time.getDate()}`;
 }
 
 class App extends React.Component {
@@ -13,44 +13,52 @@ class App extends React.Component {
     tabs: [
       {
         id: 1,
-        name: '热度',
-        type: 'hot'
+        name: "热度",
+        type: "hot",
       },
       {
         id: 2,
-        name: '时间',
-        type: 'time'
-      }
+        name: "时间",
+        type: "time",
+      },
     ],
-    active: 'hot',
+    active: "hot",
     list: [
       {
         id: 1,
-        author: '刘德华',
-        comment: '给我一杯忘情水',
-        time: new Date('2021-10-10 09:09:00'),
+        author: "刘德华",
+        comment: "给我一杯忘情水",
+        time: new Date("2021-10-10 09:09:00"),
         // 1: 点赞 0：无态度 -1:踩
-        attitude: 1
+        attitude: 1,
       },
       {
         id: 2,
-        author: '周杰伦',
-        comment: '哎哟，不错哦',
-        time: new Date('2021-10-11 09:09:00'),
+        author: "周杰伦",
+        comment: "哎哟，不错哦",
+        time: new Date("2021-10-11 09:09:00"),
         // 1: 点赞 0：无态度 -1:踩
-        attitude: 0
+        attitude: 0,
       },
       {
         id: 3,
-        author: '五月天',
-        comment: '不打扰，是我的温柔',
-        time: new Date('2021-10-11 10:09:00'),
+        author: "五月天",
+        comment: "不打扰，是我的温柔",
+        time: new Date("2021-10-11 10:09:00"),
         // 1: 点赞 0：无态度 -1:踩
-        attitude: -1
-      }
-    ]
-  }
-  render () {
+        attitude: -1,
+      },
+    ],
+  };
+
+  switchTab = (type) => {
+    //实现思路: 点击了那个tab 就将其作为当前得Tab,然后把type属性交给state中active
+    this.setState({
+      active: type,
+    });
+  };
+
+  render() {
     return (
       <div className="App">
         <div className="comment-container">
@@ -61,14 +69,16 @@ class App extends React.Component {
           {/* 排序 */}
           <div className="tabs-order">
             <ul className="sort-container">
-              {
-                this.state.tabs.map(tab => (
-                  <li
-                    key={tab.id}
-                    className={tab.type === this.state.active ? 'on' : ''}
-                  >按{tab.name}排序</li>
-                ))
-              }
+              {this.state.tabs.map((tab) => (
+                // 为每个设计一个点击事件,然后点击的时候就会更新 active
+                <li
+                  onClick={() => this.switchTab(tab.type)}
+                  key={tab.id}
+                  className={tab.type === this.state.active ? "on" : ""}
+                >
+                  按{tab.name}排序
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -94,34 +104,36 @@ class App extends React.Component {
 
           {/* 评论列表 */}
           <div className="comment-list">
-            {
-              this.state.list.map(item => (
-                <div className="list-item" key={item.id}>
-                  <div className="user-face">
-                    <img className="user-head" src={avatar} alt="" />
-                  </div>
-                  <div className="comment">
-                    <div className="user">{item.author}</div>
-                    <p className="text">{item.comment}</p>
-                    <div className="info">
-                      <span className="time">{formatDate(item.time)}</span>
-                      <span className={item.attitude === 1 ? 'like liked' : 'like'}>
-                        <i className="icon" />
-                      </span>
-                      <span className={item.attitude === -1 ? 'hate hated' : 'hate'}>
-                        <i className="icon" />
-                      </span>
-                      <span className="reply btn-hover">删除</span>
-                    </div>
+            {this.state.list.map((item) => (
+              <div className="list-item" key={item.id}>
+                <div className="user-face">
+                  <img className="user-head" src={avatar} alt="" />
+                </div>
+                <div className="comment">
+                  <div className="user">{item.author}</div>
+                  <p className="text">{item.comment}</p>
+                  <div className="info">
+                    <span className="time">{formatDate(item.time)}</span>
+                    <span
+                      className={item.attitude === 1 ? "like liked" : "like"}
+                    >
+                      <i className="icon" />
+                    </span>
+                    <span
+                      className={item.attitude === -1 ? "hate hated" : "hate"}
+                    >
+                      <i className="icon" />
+                    </span>
+                    <span className="reply btn-hover">删除</span>
                   </div>
                 </div>
-              ))
-            }
+              </div>
+            ))}
           </div>
         </div>
-      </div>)
+      </div>
+    );
   }
 }
 
-
-export default App
+export default App;
