@@ -94,6 +94,25 @@ class App extends React.Component {
     });
   };
 
+  // 切换喜欢的回调函数
+  changeAttitude = (currItem) => {
+    // 1: 点赞 0：无态度 -1:踩
+    const { attitude, id } = currItem;
+    this.setState({
+      list: this.state.list.map((item) => {
+        // 如果点击的item,与遍历到的item匹配到了,就更新它的attitude
+        if (item.id === id) {
+          return {
+            ...item,
+            attitude: attitude === 1 ? 0 : 1,
+          };
+        } else {
+          return item;
+        }
+      }),
+    });
+  };
+
   render() {
     return (
       <div className="App">
@@ -155,6 +174,7 @@ class App extends React.Component {
                   <div className="info">
                     <span className="time">{formatDate(item.time)}</span>
                     <span
+                      onClick={() => this.changeAttitude(item)}
                       className={item.attitude === 1 ? "like liked" : "like"}
                     >
                       <i className="icon" />
