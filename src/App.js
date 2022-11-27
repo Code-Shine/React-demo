@@ -86,6 +86,14 @@ class App extends React.Component {
     });
   };
 
+  // 删除评论的回调函数
+  delComment = (id) => {
+    // 使用filter 来过滤
+    this.setState({
+      list: this.state.list.filter((item) => item.id !== id),
+    });
+  };
+
   render() {
     return (
       <div className="App">
@@ -156,7 +164,12 @@ class App extends React.Component {
                     >
                       <i className="icon" />
                     </span>
-                    <span className="reply btn-hover">删除</span>
+                    <span
+                      className="reply btn-hover"
+                      onClick={() => this.delComment(item.id)}
+                    >
+                      删除
+                    </span>
                   </div>
                 </div>
               </div>
