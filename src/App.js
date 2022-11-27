@@ -1,6 +1,7 @@
 import "./index.css";
 import avatar from "./images/avatar.png";
 import React from "react";
+import { v4 as uuid } from "uuid";
 
 // 时间格式化
 function formatDate(time) {
@@ -49,11 +50,39 @@ class App extends React.Component {
         attitude: -1,
       },
     ],
+    comment: "请输入内容", //评论框的内容
   };
+
+  // 切换Tab的回调函数
   switchTab = (type) => {
     //实现思路: 点击了那个tab 就将其作为当前得Tab,然后把type属性交给state中active
     this.setState({
       active: type,
+    });
+  };
+
+  // 输入评论的回调函数
+  textAreaChange = (e) => {
+    // this.setState = { comment: e.target.value }; // 错误写法 **** 会导致无法输入
+    this.setState({ comment: e.target.value });
+    console.log("输入的comment是", this.state.comment);
+  };
+
+  // 提交评论的回调函数, 逻辑在于将comment的state 添加到 state list 中当做新的一项
+  submitComment = () => {
+    this.setState({
+      list: [
+        ...this.state.list,
+        {
+          // id: this.state.list.length + 1, // 可以使用uuid 这个包,生成独一无二的id
+          id: uuid(),
+          author: "谢霆锋",
+          comment: this.state.comment,
+          time: new Date(),
+          // 1: 点赞 0：无态度 -1:踩
+          attitude: 0,
+        },
+      ],
     });
   };
 
@@ -65,7 +94,7 @@ class App extends React.Component {
           <div className="comment-head">
             <span>5 评论</span>
           </div>
-          {/* 排序 */}
+          {/* 排序Tab */}
           <div className="tabs-order">
             <ul className="sort-container">
               {this.state.tabs.map((tab) => (
@@ -85,14 +114,19 @@ class App extends React.Component {
             <div className="user-face">
               <img className="user-head" src={avatar} alt="" />
             </div>
+            {/* 输入框,使用受控组件来进行控制,这样我们得state能够立即拿到 输入框得内容 */}
             <div className="textarea-container">
               <textarea
                 cols="80"
                 rows="5"
                 placeholder="发条友善的评论"
                 className="ipt-txt"
+                value={this.state.comment}
+                onChange={this.textAreaChange}
               />
-              <button className="comment-submit">发表评论</button>
+              <button className="comment-submit" onClick={this.submitComment}>
+                发表评论
+              </button>
             </div>
             <div className="comment-emoji">
               <i className="face"></i>
